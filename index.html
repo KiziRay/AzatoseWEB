@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azatose | 手遊代肝服務</title>
+    <meta name="description" content="Azatose 個人代肝服務，承接手遊代肝、地圖探索蒐集、主線前置、活動任務與短期託管。">
+    <meta name="application-name" content="Azatose">
+    <meta name="theme-color" content="#0f0d0b">
+    <meta name="color-scheme" content="dark">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, max-image-preview:none, max-snippet:0, max-video-preview:0">
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex, max-image-preview:none, max-snippet:0, max-video-preview:0">
+    <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+    <meta property="og:locale" content="zh_TW">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Azatose">
+    <meta property="og:title" content="Azatose | 手遊代肝服務">
+    <meta property="og:description" content="Azatose 個人代肝服務，承接手遊代肝、地圖探索蒐集、主線前置、活動任務與短期託管。">
+    <meta property="og:image" content="gameicon/90d459013fe282a24ba261c5934ec0d4.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Azatose | 手遊代肝服務">
+    <meta name="twitter:description" content="Azatose 個人代肝服務，承接手遊代肝、地圖探索蒐集、主線前置、活動任務與短期託管。">
+    <meta name="twitter:image" content="gameicon/90d459013fe282a24ba261c5934ec0d4.png">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; media-src 'self' https:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), browsing-topics=()">
+    <link rel="icon" type="image/png" href="gameicon/90d459013fe282a24ba261c5934ec0d4.png">
+    <link rel="apple-touch-icon" href="gameicon/90d459013fe282a24ba261c5934ec0d4.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="site/styles.css">
+</head>
+<body>
+    <div class="video-bg" aria-hidden="true">
+        <img class="bg-video" src="gameicon/合成 1.gif" alt="" aria-hidden="true">
+        <div class="video-overlay"></div>
+    </div>
+
+    <div class="gradient-bg" aria-hidden="true">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+    </div>
+    <canvas id="particles" aria-hidden="true"></canvas>
+    <canvas id="sakura" aria-hidden="true"></canvas>
+
+    <div class="intro-sequence" aria-hidden="true">
+        <div class="intro-darkness"></div>
+        <div class="container intro-stage">
+            <div class="intro-panel">
+                <div class="intro-discord-spacer" aria-hidden="true"></div>
+                <div class="intro-copy">
+                    <h1 class="intro-brand" id="intro-brand"></h1>
+                    <p class="intro-line intro-line-1"><span id="intro-line-1"></span><span class="intro-caret" id="intro-line-1-caret"></span></p>
+                    <p class="intro-line intro-line-2"><span id="intro-line-2"></span><span class="intro-caret" id="intro-line-2-caret"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button
+        id="partner-trigger"
+        class="partner-trigger"
+        type="button"
+        aria-label="合作友站"
+        aria-controls="partner-modal"
+        aria-expanded="false"
+    >
+        合作友站
+    </button>
+
+    <div class="partner-modal" id="partner-modal" hidden>
+        <div class="partner-backdrop" id="partner-backdrop" aria-hidden="true"></div>
+        <section class="partner-dialog" role="dialog" aria-modal="true" aria-labelledby="partner-title">
+            <button class="partner-close" id="partner-close" type="button" aria-label="關閉合作友站視窗">×</button>
+            <p class="partner-eyebrow">Partners</p>
+            <h2 class="partner-title" id="partner-title">合作友站</h2>
+            <div class="partner-links">
+                <a class="partner-link" href="https://discord.gg/CddU77U" target="_blank" rel="noreferrer noopener">
+                    <span class="partner-name">海超人與大洋遊俠的超人基地</span>
+                    <span class="partner-url">discord.gg/CddU77U</span>
+                </a>
+                <a class="partner-link" href="https://zeitfrei.uk/" target="_blank" rel="noreferrer noopener">
+                    <span class="partner-name">ZeitFrei</span>
+                    <span class="partner-url">zeitfrei.uk</span>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <main id="main-content">
+        <div class="swiper site-swiper">
+            <div class="swiper-wrapper">
+                <section class="swiper-slide page-slide">
+                    <div class="container slide-stage">
+                        <article class="center-panel hero-panel">
+                            <button class="hero-discord" id="hero-discord" type="button" aria-label="複製 Discord ID">
+                                <span class="discord-icon" aria-hidden="true">
+                                    <img src="gameicon/90d459013fe282a24ba261c5934ec0d4.png" alt="Discord 圖示">
+                                </span>
+                                <span class="discord-text">
+                                    <span class="contact-value">SakuLaLoIn</span>
+                                    <span class="copy-mini">點我複製</span>
+                                </span>
+                            </button>
+
+                            <h1 class="hero-title">Azatose</h1>
+
+                            <div class="intro-block">
+                                <p class="panel-copy">
+                                    <span class="hero-line hero-line-1">在生活跟懶惰之間選擇了全都要。</span><br>
+                                    <span class="hero-line hero-line-2">把苦差事都丟給我做吧，承接手遊代肝服務。</span>
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="swiper-slide page-slide">
+                    <div class="container slide-stage">
+                        <article class="center-panel content-panel wide-panel">
+                            <p class="eyebrow">Service</p>
+                            <h2 class="section-title">服務項目</h2>
+
+                            <div class="service-layout service-layout-desktop">
+                                <section class="service-column service-column-main" aria-label="完整服務項目">
+                                    <h3 class="mini-title">完整服務項目</h3>
+                                    <div class="service-list">
+                                        <div class="service-item">
+                                            <span class="service-num">01</span>
+                                            <p>地圖探索蒐集</p>
+                                        </div>
+                                        <div class="service-item">
+                                            <span class="service-num">02</span>
+                                            <p>主線 / 前置</p>
+                                        </div>
+                                        <div class="service-item">
+                                            <span class="service-num">03</span>
+                                            <p>限時 / 常駐活動</p>
+                                        </div>
+                                        <div class="service-item">
+                                            <span class="service-num">04</span>
+                                            <p>支線 / 區域任務 / 角色劇情</p>
+                                        </div>
+                                        <div class="service-item">
+                                            <span class="service-num">05</span>
+                                            <p>短期託管</p>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <aside class="service-column service-column-side">
+                                    <section class="info-group" aria-label="支援遊戲">
+                                        <h3 class="mini-title">支援遊戲</h3>
+                                        <div class="games-grid">
+                                            <a class="game-card" href="https://wutheringwaves.kurogames.com/zh-tw/main" target="_blank" rel="noreferrer noopener">
+                                                <div class="game-icon">
+                                                    <img src="gameicon/Wuthering_Waves_logo.png" alt="鳴潮圖示">
+                                                </div>
+                                                <h3>鳴潮</h3>
+                                            </a>
+                                            <a class="game-card" href="https://endfield.gryphline.com/zh-tw" target="_blank" rel="noreferrer noopener">
+                                                <div class="game-icon">
+                                                    <img src="gameicon/endfield-icon-zh.svg" alt="終末地圖示">
+                                                </div>
+                                                <h3>終末地</h3>
+                                            </a>
+                                            <a class="game-card" href="https://nte.iwplay.com.tw/" target="_blank" rel="noreferrer noopener">
+                                                <div class="game-icon">
+                                                    <img src="gameicon/channels4_profile.jpg" alt="異環圖示">
+                                                </div>
+                                                <h3>異環</h3>
+                                                <p>準備中</p>
+                                            </a>
+                                        </div>
+                                    </section>
+
+                                    <section class="info-group price-block" aria-label="價格">
+                                        <h3 class="mini-title">價格</h3>
+                                        <p class="price-main">私訊詳談</p>
+                                        <p class="panel-copy">未來會釋出價目表</p>
+                                    </section>
+                                </aside>
+                            </div>
+
+                            <div class="service-layout service-layout-mobile" aria-label="手機版服務資訊">
+                                <section class="mobile-cluster mobile-services">
+                                    <h3 class="mini-title">完整服務項目</h3>
+                                    <div class="mobile-service-grid">
+                                        <div class="mobile-service-pill">地圖探索蒐集</div>
+                                        <div class="mobile-service-pill">主線 / 前置</div>
+                                        <div class="mobile-service-pill">限時 / 常駐活動</div>
+                                        <div class="mobile-service-pill">支線 / 區域任務</div>
+                                        <div class="mobile-service-pill wide">角色劇情 / 短期託管</div>
+                                    </div>
+                                </section>
+
+                                <section class="mobile-cluster mobile-games">
+                                    <h3 class="mini-title">支援遊戲</h3>
+                                    <div class="mobile-game-strip">
+                                        <a class="mobile-game-card" href="https://wutheringwaves.kurogames.com/zh-tw/main" target="_blank" rel="noreferrer noopener">
+                                            <div class="game-icon">
+                                                <img src="gameicon/Wuthering_Waves_logo.png" alt="鳴潮圖示">
+                                            </div>
+                                            <span>鳴潮</span>
+                                        </a>
+                                        <a class="mobile-game-card" href="https://endfield.gryphline.com/zh-tw" target="_blank" rel="noreferrer noopener">
+                                            <div class="game-icon">
+                                                <img src="gameicon/endfield-icon-zh.svg" alt="終末地圖示">
+                                            </div>
+                                            <span>終末地</span>
+                                        </a>
+                                        <a class="mobile-game-card mobile-game-note" href="https://nte.iwplay.com.tw/" target="_blank" rel="noreferrer noopener">
+                                            <div class="game-icon">
+                                                <img src="gameicon/channels4_profile.jpg" alt="異環圖示">
+                                            </div>
+                                            <span>異環準備中</span>
+                                        </a>
+                                    </div>
+                                </section>
+
+                                <section class="mobile-cluster mobile-price">
+                                    <h3 class="mini-title">價格</h3>
+                                    <p class="price-main">私訊詳談</p>
+                                    <p class="panel-copy">未來會釋出價目表</p>
+                                </section>
+                            </div>
+
+                            <p class="service-note">致力讓顧客們都能用實惠的價格找到非打手代肝以及好服務。</p>
+                        </article>
+                    </div>
+                </section>
+            </div>
+
+            <div class="swiper-pagination"></div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="site/script.js"></script>
+</body>
+</html>

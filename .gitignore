@@ -1,0 +1,7 @@
+.git/
+.claude/
+tmp/
+server.err.log
+server.out.log
+Thumbs.db
+Desktop.ini
