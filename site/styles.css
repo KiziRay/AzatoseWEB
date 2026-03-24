@@ -597,13 +597,12 @@ body.intro-active.intro-site-visible .page-slide.is-current .center-panel {
 .content-panel {
     max-width: 1080px;
 }
-
 .hero-discord {
     display: inline-flex;
     align-items: center;
     gap: 14px;
     margin-bottom: 22px;
-    cursor: pointer;
+    cursor: auto;
     transition:
         transform var(--motion-duration-sm) var(--motion-soft),
         opacity var(--motion-duration-sm) ease;
@@ -659,6 +658,27 @@ body.intro-active .hero-discord {
     font-size: 0.62rem;
     color: rgba(255, 235, 214, 0.44);
     letter-spacing: 0.04em;
+}
+
+.copy-mini-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: fit-content;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.copy-mini-button:hover .copy-mini,
+.copy-mini-button:focus-visible .copy-mini {
+    color: rgba(255, 235, 214, 0.68);
+}
+
+.copy-mini-button:focus-visible {
+    outline: 2px solid rgba(240, 211, 179, 0.45);
+    outline-offset: 4px;
+    border-radius: 999px;
 }
 
 .hero-title {
@@ -1248,8 +1268,7 @@ body.intro-active.intro-site-visible .intro-caret {
         font-size: 3.5rem;
         letter-spacing: 0.1em;
     }
-
-    .hero-discord {
+.hero-discord {
         gap: 10px;
         margin-bottom: 14px;
     }
@@ -1462,8 +1481,7 @@ body.intro-active.intro-site-visible .intro-caret {
         padding-top: 16px;
         padding-bottom: 38px;
     }
-
-    .hero-discord {
+.hero-discord {
         margin-bottom: 12px;
     }
 

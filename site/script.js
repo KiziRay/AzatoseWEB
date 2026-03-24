@@ -362,12 +362,12 @@ function copyDiscord() {
 }
 
 function initUIActions() {
-    const discordButton = document.getElementById('hero-discord');
+    const discordCopyTrigger = document.getElementById('discord-copy-trigger');
     const partnerTrigger = document.getElementById('partner-trigger');
     const partnerBackdrop = document.getElementById('partner-backdrop');
     const partnerClose = document.getElementById('partner-close');
 
-    discordButton?.addEventListener('click', copyDiscord);
+    discordCopyTrigger?.addEventListener('click', copyDiscord);
     partnerTrigger?.addEventListener('click', () => togglePartnerModal(true));
     partnerBackdrop?.addEventListener('click', () => togglePartnerModal(false));
     partnerClose?.addEventListener('click', () => togglePartnerModal(false));
@@ -417,9 +417,9 @@ async function typeText(target, text, speed = 84) {
 }
 
 async function runIntroSequence(swiper) {
-    const line1Text = '在生活跟懶惰之間選擇了全都要。';
+    const line1Text = '\u5728\u751f\u6d3b\u8ddf\u61f6\u60f0\u4e4b\u9593\u9078\u64c7\u4e86\u5168\u90fd\u8981\u3002';
     const brandText = 'Azatose';
-    const line2Text = '把苦差事都丟給我做吧，承接手遊代肝服務。';
+    const line2Text = '\u628a\u82e6\u5dee\u4e8b\u90fd\u4e1f\u7d66\u6211\u505a\u5427\uff0c\u627f\u63a5\u624b\u904a\u4ee3\u809d\u670d\u52d9\u3002';
     const totalDuration = 4000;
     const line1End = 1500;
     const revealStart = 1500;
