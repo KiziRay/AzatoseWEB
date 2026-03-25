@@ -418,7 +418,7 @@ async function typeText(target, text, speed = 84) {
 
 async function runIntroSequence(swiper) {
     const line1Text = '\u5728\u751f\u6d3b\u8ddf\u61f6\u60f0\u4e4b\u9593\u9078\u64c7\u4e86\u5168\u90fd\u8981\u3002';
-    const brandText = 'Azatose';
+    const brandText = 'Azatosz';
     const line2Text = '\u628a\u82e6\u5dee\u4e8b\u90fd\u4e1f\u7d66\u6211\u505a\u5427\uff0c\u627f\u63a5\u624b\u904a\u4ee3\u809d\u670d\u52d9\u3002';
     const totalDuration = 4000;
     const line1End = 1500;
