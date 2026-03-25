@@ -11,21 +11,31 @@
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, max-image-preview:none, max-snippet:0, max-video-preview:0">
     <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex, max-image-preview:none, max-snippet:0, max-video-preview:0">
     <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+    <link rel="canonical" href="https://azatose.pages.dev/">
     <meta property="og:locale" content="zh_TW">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Azatosz">
+    <meta property="og:url" content="https://azatose.pages.dev/">
     <meta property="og:title" content="Azatosz | 手遊代肝服務">
     <meta property="og:description" content="Azatosz 個人代肝服務，承接手遊代肝、地圖探索蒐集、主線前置、活動任務與短期託管。">
-    <meta property="og:image" content="gameicon/90d459013fe282a24ba261c5934ec0d4.png">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://azatose.pages.dev/gameicon/og-preview.png">
+    <meta property="og:image:secure_url" content="https://azatose.pages.dev/gameicon/og-preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Azatosz 網站預覽圖">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Azatosz | 手遊代肝服務">
     <meta name="twitter:description" content="Azatosz 個人代肝服務，承接手遊代肝、地圖探索蒐集、主線前置、活動任務與短期託管。">
-    <meta name="twitter:image" content="gameicon/90d459013fe282a24ba261c5934ec0d4.png">
+    <meta name="twitter:image" content="https://azatose.pages.dev/gameicon/og-preview.png">
+    <meta name="twitter:image:alt" content="Azatosz 網站預覽圖">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; media-src 'self' https:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), browsing-topics=()">
     <link rel="icon" type="image/png" href="gameicon/90d459013fe282a24ba261c5934ec0d4.png">
     <link rel="apple-touch-icon" href="gameicon/90d459013fe282a24ba261c5934ec0d4.png">
+    <link rel="preload" href="font/KosugiMaru-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="font/solander%20demo.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
@@ -34,8 +44,8 @@
 </head>
 <body>
     <div class="video-bg" aria-hidden="true">
-        <video class="bg-video" autoplay muted loop playsinline aria-hidden="true">
-            <source src="gameicon/background-loop.mp4" type="video/mp4">
+        <video class="bg-video" muted loop playsinline preload="none" aria-hidden="true">
+            <source data-src="gameicon/background-loop.mp4" type="video/mp4">
         </video>
         <div class="video-overlay"></div>
     </div>
@@ -71,6 +81,33 @@
     >
         合作友站
     </button>
+
+    <nav class="platform-dock" aria-label="直播與影音平台連結">
+        <a class="platform-link" href="https://www.youtube.com/@LoIn_4145" target="_blank" rel="noreferrer noopener" aria-label="YouTube 主頻道" title="YouTube 主頻道">
+            <span class="platform-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img" focusable="false">
+                    <path d="M21.8 7.2a2.9 2.9 0 0 0-2-2C18 4.7 12 4.7 12 4.7s-6 0-7.8.5a2.9 2.9 0 0 0-2 2A30.4 30.4 0 0 0 1.7 12a30.4 30.4 0 0 0 .5 4.8a2.9 2.9 0 0 0 2 2c1.8.5 7.8.5 7.8.5s6 0 7.8-.5a2.9 2.9 0 0 0 2-2a30.4 30.4 0 0 0 .5-4.8a30.4 30.4 0 0 0-.5-4.8Z" fill="currentColor"/>
+                    <path d="M10 15.4V8.6L15.7 12L10 15.4Z" fill="#0f0d0b"/>
+                </svg>
+            </span>
+        </a>
+        <a class="platform-link" href="https://www.youtube.com/@AzatoszAlterZz" target="_blank" rel="noreferrer noopener" aria-label="YouTube 副頻道 VOD" title="YouTube 副頻道 VOD">
+            <span class="platform-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img" focusable="false">
+                    <path d="M21.8 7.2a2.9 2.9 0 0 0-2-2C18 4.7 12 4.7 12 4.7s-6 0-7.8.5a2.9 2.9 0 0 0-2 2A30.4 30.4 0 0 0 1.7 12a30.4 30.4 0 0 0 .5 4.8a2.9 2.9 0 0 0 2 2c1.8.5 7.8.5 7.8.5s6 0 7.8-.5a2.9 2.9 0 0 0 2-2a30.4 30.4 0 0 0 .5-4.8a30.4 30.4 0 0 0-.5-4.8Z" fill="currentColor"/>
+                    <path d="M10 15.4V8.6L15.7 12L10 15.4Z" fill="#0f0d0b"/>
+                </svg>
+            </span>
+        </a>
+        <a class="platform-link" href="https://www.twitch.tv/azatoszalterzz" target="_blank" rel="noreferrer noopener" aria-label="Twitch" title="Twitch">
+            <span class="platform-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img" focusable="false">
+                    <path d="M4.5 3.5 3 7v11h4v2.5L10 18h4.5l6.5-6.5v-8Z" fill="currentColor"/>
+                    <path d="M9 8.2h1.9v5.1H9zm5 0h1.9v5.1H14z" fill="#0f0d0b"/>
+                </svg>
+            </span>
+        </a>
+    </nav>
 
     <div class="partner-modal" id="partner-modal" hidden>
         <div class="partner-backdrop" id="partner-backdrop" aria-hidden="true"></div>

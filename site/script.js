@@ -1,4 +1,83 @@
 let introSequenceRunning = false;
+const motionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function runWhenIdle(task, timeout = 1200) {
+    if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => task(), { timeout });
+        return;
+    }
+
+    window.setTimeout(task, 280);
+}
+
+function shouldReduceMotion() {
+    return motionMediaQuery.matches || navigator.connection?.saveData === true;
+}
+
+function shouldRunAmbientMotion() {
+    return !introSequenceRunning && !document.hidden && !shouldReduceMotion();
+}
+
+function dispatchMotionStateChange() {
+    window.dispatchEvent(new Event('azatosz:motion-state-change'));
+}
+
+function initBackgroundMedia() {
+    const video = document.querySelector('.bg-video');
+    const source = video?.querySelector('source[data-src]');
+    if (!video || !source) return;
+
+    let loaded = false;
+
+    const loadVideo = () => {
+        if (loaded) return;
+        loaded = true;
+        source.src = source.dataset.src;
+        video.load();
+    };
+
+    const tryPlay = () => {
+        loadVideo();
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {});
+        }
+    };
+
+    runWhenIdle(loadVideo, 1600);
+
+    window.addEventListener('azatosz:motion-state-change', () => {
+        if (shouldRunAmbientMotion()) {
+            tryPlay();
+        } else {
+            video.pause();
+        }
+    });
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            video.pause();
+        } else if (shouldRunAmbientMotion()) {
+            tryPlay();
+        }
+    });
+}
+
+function initDocumentTitleRotation() {
+    const titles = [
+        'Azatosz | 手遊代肝服務',
+        'Azatosz | 能躺就別硬撐'
+    ];
+
+    let currentIndex = 0;
+    document.title = titles[currentIndex];
+
+    window.setInterval(() => {
+        if (document.hidden) return;
+        currentIndex = (currentIndex + 1) % titles.length;
+        document.title = titles[currentIndex];
+    }, 2400);
+}
 
 function initClientProtection() {
     const blockedHotkeys = new Set(['KeyU', 'KeyS', 'KeyP', 'KeyC', 'KeyX', 'KeyA']);
@@ -45,31 +124,45 @@ function initParticles() {
 
     const ctx = canvas.getContext('2d');
     const particles = [];
-    const particleCount = 42;
+    const particleCount = shouldReduceMotion()
+        ? 0
+        : window.innerWidth <= 720
+            ? 10
+            : 18;
+    let frameId = null;
+    let running = false;
+    let viewportWidth = window.innerWidth;
+    let viewportHeight = window.innerHeight;
 
     function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        viewportWidth = window.innerWidth;
+        viewportHeight = window.innerHeight;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        canvas.width = Math.floor(viewportWidth * dpr);
+        canvas.height = Math.floor(viewportHeight * dpr);
+        canvas.style.width = `${viewportWidth}px`;
+        canvas.style.height = `${viewportHeight}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
     class Particle {
         constructor() {
             this.x = Math.random() * window.innerWidth;
             this.y = Math.random() * window.innerHeight;
-            this.size = Math.random() * 2 + 0.8;
-            this.speedX = Math.random() * 0.24 - 0.12;
-            this.speedY = Math.random() * 0.24 - 0.12;
-            this.opacity = Math.random() * 0.22 + 0.08;
+            this.size = Math.random() * 1.5 + 0.7;
+            this.speedX = Math.random() * 0.12 - 0.06;
+            this.speedY = Math.random() * 0.12 - 0.06;
+            this.opacity = Math.random() * 0.14 + 0.05;
         }
 
         update() {
             this.x += this.speedX;
             this.y += this.speedY;
 
-            if (this.x > canvas.width + 20) this.x = -20;
-            if (this.x < -20) this.x = canvas.width + 20;
-            if (this.y > canvas.height + 20) this.y = -20;
-            if (this.y < -20) this.y = canvas.height + 20;
+            if (this.x > viewportWidth + 20) this.x = -20;
+            if (this.x < -20) this.x = viewportWidth + 20;
+            if (this.y > viewportHeight + 20) this.y = -20;
+            if (this.y < -20) this.y = viewportHeight + 20;
         }
 
         draw() {
@@ -87,6 +180,7 @@ function initParticles() {
     }
 
     function animate() {
+        if (!running) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         particles.forEach((particle, index) => {
@@ -99,9 +193,9 @@ function initParticles() {
                 const dy = particle.y - peer.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 120) {
-                    ctx.strokeStyle = `rgba(142, 95, 64, ${0.06 * (1 - distance / 120)})`;
-                    ctx.lineWidth = 0.8;
+                if (distance < 92) {
+                    ctx.strokeStyle = `rgba(142, 95, 64, ${0.035 * (1 - distance / 92)})`;
+                    ctx.lineWidth = 0.6;
                     ctx.beginPath();
                     ctx.moveTo(particle.x, particle.y);
                     ctx.lineTo(peer.x, peer.y);
@@ -110,11 +204,36 @@ function initParticles() {
             }
         });
 
-        window.requestAnimationFrame(animate);
+        frameId = window.requestAnimationFrame(animate);
     }
 
-    animate();
+    function start() {
+        if (running || particles.length === 0) return;
+        running = true;
+        frameId = window.requestAnimationFrame(animate);
+    }
+
+    function stop() {
+        running = false;
+        if (frameId !== null) {
+            window.cancelAnimationFrame(frameId);
+            frameId = null;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function syncAnimationState() {
+        if (shouldRunAmbientMotion()) {
+            start();
+        } else {
+            stop();
+        }
+    }
+
     window.addEventListener('resize', resizeCanvas);
+    document.addEventListener('visibilitychange', syncAnimationState);
+    window.addEventListener('azatosz:motion-state-change', syncAnimationState);
+    syncAnimationState();
 }
 
 function initSakura() {
@@ -123,16 +242,30 @@ function initSakura() {
 
     const ctx = canvas.getContext('2d');
     const petals = [];
-    const petalCount = 22;
+    const petalCount = shouldReduceMotion()
+        ? 0
+        : window.innerWidth <= 720
+            ? 4
+            : 8;
     const palette = [
         'rgba(255, 228, 236, 0.72)',
         'rgba(255, 214, 226, 0.68)',
         'rgba(255, 238, 244, 0.64)'
     ];
+    let frameId = null;
+    let running = false;
+    let viewportWidth = window.innerWidth;
+    let viewportHeight = window.innerHeight;
 
     function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        viewportWidth = window.innerWidth;
+        viewportHeight = window.innerHeight;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        canvas.width = Math.floor(viewportWidth * dpr);
+        canvas.height = Math.floor(viewportHeight * dpr);
+        canvas.style.width = `${viewportWidth}px`;
+        canvas.style.height = `${viewportHeight}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
     class Petal {
@@ -141,28 +274,28 @@ function initSakura() {
         }
 
         reset(resetFromTop = false) {
-            this.x = Math.random() * window.innerWidth;
+            this.x = Math.random() * viewportWidth;
             this.y = resetFromTop
-                ? -30 - Math.random() * window.innerHeight * 0.3
-                : Math.random() * window.innerHeight;
-            this.size = 8 + Math.random() * 12;
-            this.speedY = 0.55 + Math.random() * 1.1;
-            this.speedX = -0.4 + Math.random() * 0.8;
+                ? -30 - Math.random() * viewportHeight * 0.3
+                : Math.random() * viewportHeight;
+            this.size = 7 + Math.random() * 8;
+            this.speedY = 0.38 + Math.random() * 0.58;
+            this.speedX = -0.22 + Math.random() * 0.44;
             this.swing = Math.random() * Math.PI * 2;
-            this.swingSpeed = 0.01 + Math.random() * 0.02;
+            this.swingSpeed = 0.005 + Math.random() * 0.01;
             this.rotation = Math.random() * Math.PI * 2;
-            this.rotationSpeed = -0.01 + Math.random() * 0.02;
-            this.opacity = 0.3 + Math.random() * 0.4;
+            this.rotationSpeed = -0.006 + Math.random() * 0.012;
+            this.opacity = 0.18 + Math.random() * 0.24;
             this.color = palette[Math.floor(Math.random() * palette.length)];
         }
 
         update() {
             this.swing += this.swingSpeed;
             this.rotation += this.rotationSpeed;
-            this.x += this.speedX + Math.sin(this.swing) * 0.55;
+            this.x += this.speedX + Math.sin(this.swing) * 0.28;
             this.y += this.speedY;
 
-            if (this.y > canvas.height + 30 || this.x < -40 || this.x > canvas.width + 40) {
+            if (this.y > viewportHeight + 30 || this.x < -40 || this.x > viewportWidth + 40) {
                 this.reset(true);
             }
         }
@@ -189,16 +322,42 @@ function initSakura() {
     }
 
     function animate() {
+        if (!running) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         petals.forEach((petal) => {
             petal.update();
             petal.draw();
         });
-        window.requestAnimationFrame(animate);
+        frameId = window.requestAnimationFrame(animate);
     }
 
-    animate();
+    function start() {
+        if (running || petals.length === 0) return;
+        running = true;
+        frameId = window.requestAnimationFrame(animate);
+    }
+
+    function stop() {
+        running = false;
+        if (frameId !== null) {
+            window.cancelAnimationFrame(frameId);
+            frameId = null;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function syncAnimationState() {
+        if (shouldRunAmbientMotion()) {
+            start();
+        } else {
+            stop();
+        }
+    }
+
     window.addEventListener('resize', resizeCanvas);
+    document.addEventListener('visibilitychange', syncAnimationState);
+    window.addEventListener('azatosz:motion-state-change', syncAnimationState);
+    syncAnimationState();
 }
 
 function initReveal() {
@@ -242,17 +401,31 @@ function syncActiveSlide(swiper, options = {}) {
     }
 }
 
+function triggerEdgeBounce(swiper, direction) {
+    if (!swiper?.el) return;
+
+    const bounceClass = direction === 'start' ? 'is-bouncing-start' : 'is-bouncing-end';
+    swiper.el.classList.remove('is-bouncing-start', 'is-bouncing-end');
+
+    window.requestAnimationFrame(() => {
+        swiper.el.classList.add(bounceClass);
+        window.setTimeout(() => {
+            swiper.el?.classList.remove(bounceClass);
+        }, 380);
+    });
+}
+
 function initSwiper() {
     if (typeof Swiper === 'undefined') return null;
 
     const swiper = new Swiper('.site-swiper', {
         direction: 'horizontal',
-        loop: true,
+        loop: false,
         speed: 920,
         slidesPerView: 1,
         spaceBetween: 0,
         allowTouchMove: true,
-        resistanceRatio: 0.4,
+        resistanceRatio: 0.82,
         keyboard: {
             enabled: true
         },
@@ -302,9 +475,20 @@ function initWheelNavigation(swiper) {
 
         if (Math.abs(wheelBuffer) < 42) return;
 
+        const movingForward = wheelBuffer > 0;
+        if ((movingForward && swiper.isEnd) || (!movingForward && swiper.isBeginning)) {
+            triggerEdgeBounce(swiper, movingForward ? 'end' : 'start');
+            wheelBuffer = 0;
+            wheelLocked = true;
+            window.setTimeout(() => {
+                wheelLocked = false;
+            }, 360);
+            return;
+        }
+
         wheelLocked = true;
 
-        if (wheelBuffer > 0) {
+        if (movingForward) {
             swiper.slideNext();
         } else {
             swiper.slidePrev();
@@ -315,6 +499,21 @@ function initWheelNavigation(swiper) {
             wheelLocked = false;
         }, 900);
     }, { passive: false });
+}
+
+function initKeyboardEdgeBounce(swiper) {
+    if (!swiper?.el) return;
+
+    window.addEventListener('keydown', (event) => {
+        if (introSequenceRunning) return;
+        if (document.getElementById('partner-modal')?.hidden === false) return;
+
+        if (event.code === 'ArrowRight' && swiper.isEnd) {
+            triggerEdgeBounce(swiper, 'end');
+        } else if (event.code === 'ArrowLeft' && swiper.isBeginning) {
+            triggerEdgeBounce(swiper, 'start');
+        }
+    });
 }
 
 function lockVerticalScroll() {
@@ -437,6 +636,7 @@ async function runIntroSequence(swiper) {
 
     introSequenceRunning = true;
     document.body.classList.add('intro-active');
+    dispatchMotionStateChange();
 
     if (swiper) {
         swiper.allowTouchMove = false;
@@ -488,6 +688,7 @@ async function runIntroSequence(swiper) {
     );
 
     introSequenceRunning = false;
+    dispatchMotionStateChange();
 
     if (swiper) {
         swiper.allowTouchMove = true;
@@ -496,14 +697,19 @@ async function runIntroSequence(swiper) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    initDocumentTitleRotation();
     initClientProtection();
     initUIActions();
     lockVerticalScroll();
-    initParticles();
-    initSakura();
+    initBackgroundMedia();
     initReveal();
     const swiper = initSwiper();
     initWheelNavigation(swiper);
+    initKeyboardEdgeBounce(swiper);
+    runWhenIdle(() => {
+        initParticles();
+        initSakura();
+    }, 1800);
     runIntroSequence(swiper);
 
     window.addEventListener('keydown', (event) => {
